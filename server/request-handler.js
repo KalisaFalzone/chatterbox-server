@@ -1,3 +1,4 @@
+//var fs = require('fs');
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -11,8 +12,17 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var messages = [];
 
-var requestHandler = function(request, response) {
+module.exports = requestHandler = function(request, response) {
+
+  //different types of requests:
+  ////POST
+  /////different options
+  ////GET
+  /////different options, does room exist?
+  var requestData = JSON.parse(request);
+
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -31,7 +41,22 @@ var requestHandler = function(request, response) {
 
   // The outgoing status.
   var statusCode = 200;
+  // failStatusCode = 400;
 
+
+  if (typeof requestData !== 'object'){
+    statusCode = 404;
+    console.error("invalid request!!! statusCode:", statusCode);
+  }
+
+  if (requestData.type === "POST") {
+    var newMessage = requestData.data;
+    messages.push(newMessage);
+    console.log('chat posted!');
+  } else if (requestData.type = "GET") {
+
+    console.log('GET request received');
+  }
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
@@ -40,6 +65,9 @@ var requestHandler = function(request, response) {
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = "text/plain";
+
+
+
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
@@ -70,4 +98,44 @@ var defaultCorsHeaders = {
   "access-control-allow-headers": "content-type, accept",
   "access-control-max-age": 10 // Seconds.
 };
+
+
+
+
+
+
+
+
+
+  // var request = http.get('http://127.0.0.1:3000/classes/messages', function(response) {
+  //     console.log(response.statusCode);
+  //   var messages = "";
+  //   response.on('data', function (chunk) {
+  //     messages += chunk;
+  //   });
+  //   response.on('end', function() {
+  //     if (response.statusCode === 200) {
+  //       try {
+  //         var parsedData = JSON.parse(messages);
+  //         console.log('The parsed data is...', parsedData);
+  //       }
+  //       catch(error) {
+  //         console.error(error);
+  //       }
+  //     }
+  //   });
+  // });
+
+
+// fs.appendFile('./messages.txt', 'messages', function (err) {
+//   if (err) {
+//     console.error(err);
+//   };
+//   console.log('The "data to append" was appended to file!');
+// });
+
+// fs.readFile('/etc/passwd', function (err, data) {
+//   if (err) throw err;
+//   console.log(data);
+// });
 
