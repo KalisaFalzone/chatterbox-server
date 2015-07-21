@@ -14,14 +14,15 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 var messages = [];
 
-module.exports = requestHandler = function(request, response) {
+module.exports = function(request, response) {
+  console.log('did we get this far?');
 
   //different types of requests:
   ////POST
   /////different options
   ////GET
   /////different options, does room exist?
-  var requestData = JSON.parse(request);
+  //var requestData = JSON.parse(request);
 
   // Request and Response come from node's http module.
   //
@@ -38,25 +39,31 @@ module.exports = requestHandler = function(request, response) {
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
   console.log("Serving request type " + request.method + " for url " + request.url);
-
+  //console.log(request);
   // The outgoing status.
   var statusCode = 200;
   // failStatusCode = 400;
 
 
-  if (typeof requestData !== 'object'){
-    statusCode = 404;
-    console.error("invalid request!!! statusCode:", statusCode);
-  }
+  //    response.on('data', function (chunk) {
+  //     messages += chunk;
+  //   });
 
-  if (requestData.type === "POST") {
-    var newMessage = requestData.data;
-    messages.push(newMessage);
-    console.log('chat posted!');
-  } else if (requestData.type = "GET") {
 
-    console.log('GET request received');
-  }
+  // if (typeof requestData !== 'object'){
+  //   statusCode = 404;
+  //   console.error("invalid request!!! statusCode:", statusCode);
+  // }
+
+  // if (request.method === "POST") {
+  //   // var newMessage = requestData.data;
+
+  //   messages.push(newMessage);
+  //   console.log('chat posted!');
+  // } else if (request.method = "GET") {
+
+  //   console.log('GET request received');
+  // }
   // See the note below about CORS headers.
   var headers = defaultCorsHeaders;
 
@@ -110,9 +117,7 @@ var defaultCorsHeaders = {
   // var request = http.get('http://127.0.0.1:3000/classes/messages', function(response) {
   //     console.log(response.statusCode);
   //   var messages = "";
-  //   response.on('data', function (chunk) {
-  //     messages += chunk;
-  //   });
+
   //   response.on('end', function() {
   //     if (response.statusCode === 200) {
   //       try {
